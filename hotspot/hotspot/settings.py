@@ -22,7 +22,7 @@ IS_LINUX = sys.platform.startswith('linux')
 class SQL:
 
     NAME = 'hotspot'
-    USER: 'cone'
+    USER = 'cone'
     PASSWORD = 'Cone3.1415926' if IS_LINUX else '3.1415926'
     HOST = '127.0.0.1' if IS_LINUX else '47.94.99.0'
     PORT = '3306'
