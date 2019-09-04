@@ -14,13 +14,7 @@ class Parser:
         self.config = config
         self.config_id = config.get('id')
         self._abnormal = Abnormal.NONE
-        self._is_init = False   # 是否已经是初始化
-
         self.log = HotspotLog(source_id=self.config_id)
-        # Xpath
-        self.xpath_title = config.get('xpath_title')
-        self.xpath_pubtime = config.get('xpath_pubtime')
-        self.xpath_content = config.get('xpath_content')
 
         self._is_working = False
 
@@ -29,32 +23,36 @@ class Parser:
         # 每一条要保存信心所必须有的信息
         self.item = {
             'is_test': self.config.get('is_test', '0') == '1',
-            'config_id': self.config_id,
+            'source': self.config_id,
         }
+
+        self.link_trash_selector = self.config.get('link_trash_selector')
+        self.descr_trash_selector = self.config.get('descr_trash_selector')
 
         self.log_url_error = 0
         self.log_doc_error = 0
         self.log_hot_num = 0
         self.log_upload_num = 0
+        self.log_except_num = self.config.get('default_count')
         self.log_start_time = time.strftime('%Y-%m-%d %H:%M:%S')
 
     def get_crawl_log(self):
+        if self._abnormal != Abnormal.NONE:
+            abnormal, warn_msg = self._abnormal
         if self.log_url_error:
             abnormal, warn_msg = Abnormal.ERROR_SOURCE_URL
         elif self.log_doc_error:
             abnormal, warn_msg = Abnormal.ERROR_SOURCE_DOC
         elif self.log_hot_num == 0:
             abnormal, warn_msg = Abnormal.EMPTY_LINK
+        elif self.log_except_num > self.log_hot_num:
+            abnormal, warn_msg = Abnormal.WARN_HOT_NUM
         else:
             abnormal, warn_msg = Abnormal.NONE
-        warn_msg = f'[{self.log_upload_num}{self.log_hot_num}]{warn_msg}'
+        warn_msg = f'[{self.log_upload_num}|{self.log_hot_num}|{self.log_except_num}]{warn_msg}'
         logger.info("[%s][%s]clawl done, get %s/%s hotspot", self.config_id, self.name, self.log_upload_num, self.log_hot_num)
         return dict(
             source_id=self.config_id,
-            # url_error=self.log_doc_error,
-            # doc_error=self.log_doc_error,
-            # hot_num=self.log_hot_num,
-            # upload_num=self.log_upload_num,
             abnormal=abnormal,
             warn_msg=warn_msg,
             last_runtime=self.log_start_time
@@ -65,6 +63,7 @@ class Parser:
 
     def list_error(self, response): # 处理列表页错误的url, 该板块有问题
         self.log.source_url_error = True
+        self._is_working = False
 
     def get_start_request(self) -> Request:
         return Request(

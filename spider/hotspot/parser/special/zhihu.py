@@ -19,7 +19,6 @@ class SinaParser(Parser):
             item = dict(
                 title=data['target']['titleArea']['text'],
                 url=data['target']['link']['url'],
-                source=self.config_id,
                 real_pos=index
             )
             yield item

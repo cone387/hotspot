@@ -10,7 +10,7 @@ from urllib.request import urljoin
 
 
 class SinaParser(Parser):
-    name = '微博热搜'
+    name = '# 微博热搜'
 
     def parse_list(self, response):
         # data_str = re.search('\[.*\]', response.text)
@@ -27,6 +27,7 @@ class SinaParser(Parser):
                 'title': data.text(),
                 'source': self.config_id,
                 'real_pos': index,
+                'hot_descr': '',
             }
             yield item
 

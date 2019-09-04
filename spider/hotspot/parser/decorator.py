@@ -24,6 +24,7 @@ def collect_parse_log(parse_method):
                     if code == Value.HOT_NUM:
                         parser.log_hot_num += value
                 elif isinstance(item, dict):
+                    item.update(parser.item)
                     if NewsRecorder.record(item):
                         parser.log_upload_num += 1
         except Exception as e:

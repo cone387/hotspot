@@ -7,7 +7,8 @@ from django.contrib.auth import get_user_model
 # 来源于哪里。热度是多少。如何衡量热度？
 STATUS = {
     0: '禁用',
-    1: '启用'
+    1: '启用',
+    2: '待采集',
 }
 
 
@@ -35,7 +36,11 @@ class SourceItem(models.Model):
     url = models.CharField(max_length=255, unique=True, verbose_name='来源URL')
     fetch_interval = models.IntegerField(default=10, verbose_name='采集频率')
     fetch_time = models.DateTimeField(default=timezone.now, verbose_name='采集时间')
-    selector = models.CharField(max_length=200, null=True, blank=True, verbose_name='选择器配置')
+    item_selector = models.CharField(max_length=200, null=True, blank=True, verbose_name='热点项选择器')
+    link_selector = models.CharField(max_length=100, null=True, blank=True, verbose_name='连接选择器')
+    link_trash_selector = models.CharField(max_length=100, null=True, blank=True, verbose_name='连接垃圾项选择器')
+    descr_selector = models.CharField(max_length=100, null=True, blank=True, verbose_name='描述选择器')
+    descr_trash_selector = models.CharField(max_length=100, null=True, blank=True, verbose_name='描述垃圾选择器')
     status = models.IntegerField(choices=STATUS.items(), default=1, verbose_name='状态')
     default_count = models.IntegerField(verbose_name='默认返回条数', default=10)
     charset = models.CharField(max_length=5, default='utf-8', verbose_name='网站编码')

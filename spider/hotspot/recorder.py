@@ -9,7 +9,6 @@ class _NewsRecorder(object):
     def __init__(self):
         super().__init__()
         self.pool = MysqlPool(**MYSQL)
-        self.sql = self.pool.get_sql()
 
     def record(self, item):
         is_test = item.pop('is_test', False)
@@ -24,23 +23,26 @@ class _NewsRecorder(object):
 
     def save(self, table, item):
         save_cmd = self.get_save_cmd(table, item)
+        sql = self.pool.get_sql()
         try:
-            self.sql.cursor.execute(save_cmd)
-            self.sql.conn.commit()
+            sql.cursor.execute(save_cmd)
+            sql.conn.commit()
         except IntegrityError:  # 重复
             return False
         except Exception as e:
-            self.sql.close()
-            self.sql = self.pool.get_sql()
             logger.error("save error: %s", str(e))
             return False
+        finally:
+            sql.close()
         return True
 
     def upadte_item(self, item):
+        sql = self.pool.get_sql()
         limit_dict = {'id': item.pop('source_id')}
-        code, msg = OriginSqlItem.update_item(self.sql, TABLE['hotspot-source'], value_dict=item, limit_dict=limit_dict)
+        code, msg = OriginSqlItem.update_item(sql, TABLE['hotspot-source'], value_dict=item, limit_dict=limit_dict)
         if not code:
             logger.error("update status error, %s", msg)
+        sql.close()
 
     @classmethod
     def get_save_cmd(cls, table, item):
@@ -57,7 +59,6 @@ class _NewsRecorder(object):
         return cmd
 
     def close(self):
-        self.sql.close()
         self.pool.close()
 
 

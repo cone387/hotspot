@@ -32,6 +32,7 @@ class HotSpotCrawler(CrawlerSpider):
                 #     collect_logger.info(json.dumps(board_log))
                 #     logger.info("[%s][%s]clawl done", configid, board_log['url'])
                 log: dict = parser.get_crawl_log()
+                logger.info(log)
                 NewsRecorder.upadte_item(log)
                 del self.parser_map[config_id]
         return len(self.parser_map) < PROCESS_CONFIG_NUM
@@ -48,3 +49,6 @@ class HotSpotCrawler(CrawlerSpider):
         else:
             time.sleep(CONFIG_REGET_DELAY)
 
+    def stop(self):
+        super().stop()
+        NewsRecorder.close()

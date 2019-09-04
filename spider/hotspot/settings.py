@@ -3,8 +3,9 @@ from .params import StartParams
 DEBUG = StartParams.get('debug')
 THREAD_NUM = StartParams.get('thread_num')
 
-TASK_FETCH_URL = 'http://127.0.0.1:8000/api/config/website/get_next'
-TEST_FETCH_URL = 'http://127.0.0.1:8000/api/config/website/get_next'
+TASK_FETCH_URL = 'http://47.96.233.65/api/config/website/get_next'
+TEST_FETCH_URL = 'http://47.96.233.65/api/config/website/get_next'
+
 
 MYSQL = {
     'host': '47.94.99.0',
