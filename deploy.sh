@@ -15,7 +15,7 @@ elif [ $type == 1 ]
 then
   sh ./spider/deploy_spider.sh $is_mac
   echo "deploy spider"
-elif [ $tpye == 2 ]
+elif [ $type == 2 ]
 then
   sh ./hotspot/deploy_depoy_server.sh
   sh ./spider/deploy_spider.sh
