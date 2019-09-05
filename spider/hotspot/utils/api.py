@@ -10,11 +10,11 @@ def get_config():
         value = requests.get(TASK_FETCH_URL, headers=Request.headers, timeout=30).json()['data']
         if not value:
             logger.debug("No more news config")
-            # time.sleep(2)
+            time.sleep(3)
             return get_config()
         return value
     except Exception as e:
-        # time.sleep(1)
+        time.sleep(3)
         logger.debug("Get config error: %s", str(e))
         return get_config()
 

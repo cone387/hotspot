@@ -3,7 +3,10 @@ from .params import StartParams
 DEBUG = StartParams.get('debug')
 THREAD_NUM = StartParams.get('thread_num')
 
-TASK_FETCH_URL = 'http://47.96.233.65/api/config/website/get_next'
+TASK_FETCH_URL = 'http://47.96.233.65/api/config/website/get_next' \
+    if DEBUG else 'http://127.0.0.1/api/config/website/get_next'
+
+
 TEST_FETCH_URL = 'http://47.96.233.65/api/config/website/get_next'
 
 
@@ -13,7 +16,7 @@ MYSQL = {
     'user': 'cone',
     'pwd': '3.1415926',
 } if DEBUG else {
-    'host': '47.96.233.65',
+    'host': '127.0.0.1',
     'db': 'hotspot',
     'user': 'cone',
     'pwd': 'Cone3.1415926',
