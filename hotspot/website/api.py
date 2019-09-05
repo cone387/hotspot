@@ -49,7 +49,8 @@ class DataFetcher(ListView):
         except:
             return []
         self.paginate_by = source.default_count
-        return HotSpot.objects.filter(source=source.id, create_time__gt=source.last_runtime).order_by(self.ordering).values('real_pos', 'title', 'url')
+        return HotSpot.objects.filter(source=source.id)\
+            .order_by(self.ordering).values('real_pos', 'title', 'url', 'hot_descr')
 
     def render_to_response(self, context, **response_kwargs):
         return ApiResponse(data=list(context['object_list']))
@@ -57,7 +58,11 @@ class DataFetcher(ListView):
 
 def get_enable_website(request):    # 已启用的采集
     category = request.GET.get('category')
-    site_list = SourceItem.objects.filter(status=1, category=category).values('id', 'name', 'url', 'category', 'site_name', 'image')
+    if category:
+        site_list = SourceItem.objects.filter(status=1, category=category)
+    else:
+        site_list = SourceItem.objects.filter(status=1)
+    site_list = site_list.values('id', 'name', 'url', 'category', 'site_name', 'image')
     return ApiResponse(data=list(site_list))
 
 
