@@ -5,9 +5,7 @@ then
   cd /root/user/hotspot
 fi
 
-ps -ef | grep manage.py |awk '{print $2}' | xargs kill -9
-
-type=1     # 0, 采集， 1, 服务，2， 全部
+type=2     # 0, 采集， 1, 服务，2， 全部
 
 if [ $type == 0 ]
 then
