@@ -17,7 +17,7 @@ then
   echo "deploy spider"
 elif [ $type == 2 ]
 then
-  sh ./hotspot/deploy_depoy_server.sh $is_mac
+  sh ./hotspot/deploy_server.sh $is_mac
   sh ./spider/deploy_spider.sh $is_mac
   echo "deploy server and spider"
 else
