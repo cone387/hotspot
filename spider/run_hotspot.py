@@ -1,10 +1,11 @@
-from news.newscrawler import NewsCrawler
-from news.parser.manger import ParserManager
+from hotspot.newscrawler import HotSpotCrawler
+from hotspot.parser.manger import ParserManager
 from cone.spider_ex.log import spider_logger as logger, formatter, log_console
-from news.settings import THREAD_NUM
+from hotspot.settings import THREAD_NUM
 import logging
 import getopt
 import sys
+
 
 def init_logger(logfile):
     # if not sys.platform.startswith('win'):
@@ -14,11 +15,10 @@ def init_logger(logfile):
     logger.addHandler(file_handle)
 
 
-
 if __name__ == "__main__":
     print(sys.argv)
     opts, args = getopt.getopt(sys.argv[1:], "l:t:d:", ["thread=", 'logfile=', 'debug='])
-    logfile = "news.log"
+    logfile = "hotspot.log"
     thread_num = THREAD_NUM
     debug = True
     for opt, arg in opts:
@@ -32,5 +32,5 @@ if __name__ == "__main__":
     init_logger(logfile)
     logger.setLevel(logging.DEBUG if debug else logging.INFO)
     parser_manager = ParserManager()
-    spider = NewsCrawler(parser_manager, thread_num)
+    spider = HotSpotCrawler(parser_manager, thread_num)
     spider.start()

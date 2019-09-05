@@ -12,7 +12,14 @@ MYSQL = {
     'db': 'hotspot',
     'user': 'cone',
     'pwd': '3.1415926',
+} if DEBUG else {
+    'host': '47.96.233.65',
+    'db': 'hotspot',
+    'user': 'cone',
+    'pwd': 'Cone3.1415926',
 }
+
+
 COLLECT_LOG_DIR = 'logs'
 
 

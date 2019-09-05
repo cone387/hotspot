@@ -1,27 +1,28 @@
-cd /root/user/hotspot
+is_mac=0
+
+if [ $is_mac != 1 ]
+then
+  cd /root/user/hotspot
+fi
 
 ps -ef | grep manage.py |awk '{print $2}' | xargs kill -9
 
-type=0     # 0, 采集， 1, 服务，2， 全部
+type=1     # 0, 采集， 1, 服务，2， 全部
 
 if [ $type == 0 ]
 then
-  cd hotspot
-  python3 manage.py makemigrations
-  python3 manage.py migrate
-  python3 manage.py runserver 0.0.0.0:80
+  sh ./hotspot/depoy_server.sh $is_mac
+  echo "deploy server"
 elif [ $type == 1 ]
 then
-  nohup python3 deploy_spider.py -P 2 -t 4 -I > website.spider.log 2>&1 &
+  sh ./spider/deploy_spider.sh $is_mac
+  echo "deploy spider"
 elif [ $tpye == 2 ]
 then
-  cd hotspot
-  python3 manage.py makemigrations
-  python3 manage.py migrate
-  python3 manage.py runserver 0.0.0.0:80
-  cd ..
-  nohup python3 deploy_spider.py -P 2 -t 4 -I > website.spider.log 2>&1 &
+  sh ./hotspot/deploy_depoy_server.sh
+  sh ./spider/deploy_spider.sh
+  echo "deploy server and spider"
 else
-  echo "not type"
+  echo "type not found"
 fi
 echo "deploy"

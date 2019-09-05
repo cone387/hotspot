@@ -43,7 +43,7 @@ class HotSpotCrawler(CrawlerSpider):
             config_id = config.get('id')
             if config_id in self.parser_map: # 不会爬取重复站点
                 return
-            parser = self.parser_manager.find_parser(config_id).instance(config)
+            parser = self.parser_manager.find_parser(config).instance(config)
             self.parser_map[config_id] = parser
             parser.start_parse()
         else:

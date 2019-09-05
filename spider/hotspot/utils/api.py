@@ -1,13 +1,13 @@
 
 from ..settings import TASK_FETCH_URL, TEST_FETCH_URL
-from cone.spider_ex import logger
+from cone.spider_ex import logger, Request
 import requests
 import time
 
 
 def get_config():
     try:
-        value = requests.get(TASK_FETCH_URL).json()['value']
+        value = requests.get(TASK_FETCH_URL, headers=Request.headers, timeout=30).json()['data']
         if not value:
             logger.debug("No more news config")
             # time.sleep(2)

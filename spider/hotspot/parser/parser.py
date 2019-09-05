@@ -39,18 +39,18 @@ class Parser:
     def get_crawl_log(self):
         if self._abnormal != Abnormal.NONE:
             abnormal, warn_msg = self._abnormal
-        if self.log_url_error:
+        elif self.log_url_error:
             abnormal, warn_msg = Abnormal.ERROR_SOURCE_URL
         elif self.log_doc_error:
             abnormal, warn_msg = Abnormal.ERROR_SOURCE_DOC
         elif self.log_hot_num == 0:
-            abnormal, warn_msg = Abnormal.EMPTY_LINK
+            abnormal, warn_msg = Abnormal.EMPTY_HOT_NUM
         elif self.log_except_num > self.log_hot_num:
             abnormal, warn_msg = Abnormal.WARN_HOT_NUM
         else:
             abnormal, warn_msg = Abnormal.NONE
         warn_msg = f'[{self.log_upload_num}|{self.log_hot_num}|{self.log_except_num}]{warn_msg}'
-        logger.info("[%s][%s]clawl done, get %s/%s hotspot", self.config_id, self.name, self.log_upload_num, self.log_hot_num)
+        logger.info("[%s][%s][%s]clawl done, get %s/%s hotspot", self.config_id, self.config['name'], self.name, self.log_upload_num, self.log_hot_num)
         return dict(
             source_id=self.config_id,
             abnormal=abnormal,
@@ -82,13 +82,14 @@ class Parser:
         return True
 
     def start_parse(self):
-        request = self.get_start_request()
-        if isinstance(request, Request):
-            self._is_working = True
-            request.start_request()
-        else:
-            logger.warn('start request not found')
-            self.set_abnormal(Abnormal.ERROR_START_REQUEST)
+        if self.check_fields():
+            request = self.get_start_request()
+            if isinstance(request, Request):
+                self._is_working = True
+                request.start_request()
+            else:
+                logger.warn('start request not found')
+                self.set_abnormal(Abnormal.ERROR_START_REQUEST)
 
     @classmethod
     def instance(cls, config):
