@@ -1,4 +1,4 @@
-from pyquery import PyQuery
+from cone.pyquery_ex import PyQuery
 from lxml import etree
 from .request import CrawlerRequest
 from urllib.request import urljoin
