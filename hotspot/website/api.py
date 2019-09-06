@@ -38,7 +38,7 @@ class SpiderSchedule(View):
 class DataFetcher(ListView):
     paginate_by = 10
     model = HotSpot
-    ordering = '-id'
+    ordering = '-create_time'
 
     def get_queryset(self):
         id = self.request.GET.get('id')
