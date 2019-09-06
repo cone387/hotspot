@@ -13,5 +13,5 @@ class Abnormal:
     ERROR_SOURCE_DOC = (11, '热点文档解析错误')
 
     @classmethod
-    def abnoraml(cls, msg):
+    def abnoraml(cls, msg, code=20):
         return (20, msg)

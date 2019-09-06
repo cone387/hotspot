@@ -1,6 +1,7 @@
 from types import GeneratorType
 from cone.spider_ex import Request, logger
 from .board_log import BoardLog
+from ..abnormal import Abnormal
 from ..recorder import NewsRecorder
 
 
@@ -29,7 +30,7 @@ def collect_parse_log(parse_method):
                         parser.log_upload_num += 1
         except Exception as e:
             logger.info('list error: %s', str(e))
-            parser.log_doc_error = 1
+            parser._abnormal = Abnormal.abnoraml(code=30, msg=Abnormal.ERROR_SOURCE_DOC[1])
         logger.info("[%s][%s]get %s hot num in %s", parser.config_id, parser.name, parser.log_hot_num, response.url)
         parser._is_working = False
     return parse_wrapper
