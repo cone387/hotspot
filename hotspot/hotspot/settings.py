@@ -36,7 +36,7 @@ SECRET_KEY = '*x6=p)(+oo!d+5n#v3a^)%_^bv)ca83o_$x3rrz#unwe^k#!$$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['47.96.233.65', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['47.96.233.65', 'api.seekcone.com', '127.0.0.1']
 
 
 # Application definition
