@@ -20,6 +20,7 @@ class HotSpot(models.Model):
     source = models.IntegerField(verbose_name='来源网站ID', db_index=True)
     real_pos = models.IntegerField(verbose_name='实时热度', default=10)
     hot_descr = models.CharField(max_length=100, verbose_name='热度说明', null=True, blank=True)
+    hot_md5 = models.CharField(max_length=32, verbose_name='hot md5', unique=True)
     create_time = models.DateTimeField(default=timezone.now, db_index=True)
     update_time = models.DateTimeField(auto_now=True)
 

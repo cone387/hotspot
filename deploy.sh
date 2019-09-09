@@ -5,7 +5,7 @@ then
   cd /root/user/hotspot
 fi
 
-type=0     # 0, 服务， 1, 采集，2， 全部
+type=2     # 0, 服务， 1, 采集，2， 全部
 
 if [ $type == 0 ]
 then
