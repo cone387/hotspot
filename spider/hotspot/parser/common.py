@@ -33,7 +33,7 @@ class CommonParser(Parser):
     def check_fields(self):
         for field in self.fields_list:
             if not self.config.get(field):
-                self._abnormal = Abnormal.abnoraml(f"{field} not found")
+                self._abnormal = Abnormal.abnormal(f"{field} not found")
                 return False
         return True
 
